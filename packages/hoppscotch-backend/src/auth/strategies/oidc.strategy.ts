@@ -20,10 +20,9 @@ export class OidcStrategy extends PassportStrategy(Strategy) {
       callbackURL: configService.get('OIDC_CALLBACK_URL'),
       scope: configService.get('INFRA.OIDC_SCOPE').split(','),
       issuer: configService.get('OIDC_ISSUER'),
-      authURL: configService.get('OIDC_AUTH_URL'),
+      authorizationURL: configService.get('OIDC_AUTH_URL'),
       tokenURL: configService.get('OIDC_TOKEN_URL'),
       userInfoURL: configService.get('OIDC_USERINFO_URL'),
-      store: true,
     });
   }
 
