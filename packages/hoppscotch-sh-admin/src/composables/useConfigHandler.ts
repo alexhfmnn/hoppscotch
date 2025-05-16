@@ -26,6 +26,7 @@ import {
   GOOGLE_CONFIGS,
   MAIL_CONFIGS,
   MICROSOFT_CONFIGS,
+  OIDC_CONFIGS,
   ServerConfigs,
   UpdatedConfigs,
 } from '~/helpers/configs';
@@ -113,6 +114,20 @@ export function useConfigHandler(updatedConfigs?: ServerConfigs) {
             tenant: getFieldValue(InfraConfigEnum.MicrosoftTenant),
           },
         },
+        oidc: {
+          name: 'oidc',
+          enabled: allowedAuthProviders.value.includes(AuthProvider.Oidc),
+          fields: {
+            client_id: getFieldValue(InfraConfigEnum.OidcClientId),
+            client_secret: getFieldValue(InfraConfigEnum.OidcClientSecret),
+            callback_url: getFieldValue(InfraConfigEnum.OidcCallbackUrl),
+            scope: getFieldValue(InfraConfigEnum.OidcScope),
+            issuer: getFieldValue(InfraConfigEnum.OidcIssuer),
+            auth_url: getFieldValue(InfraConfigEnum.OidcAuthUrl),
+            token_url: getFieldValue(InfraConfigEnum.OidcTokenUrl),
+            userinfo_url: getFieldValue(InfraConfigEnum.OidcUserinfoUrl),
+          },
+        },
       },
       mailConfigs: {
         name: 'email',
@@ -176,6 +191,7 @@ export function useConfigHandler(updatedConfigs?: ServerConfigs) {
       config.providers.github,
       config.providers.google,
       config.providers.microsoft,
+      config.providers.oidc,
       config.mailConfigs,
     ];
 
@@ -248,6 +264,11 @@ export function useConfigHandler(updatedConfigs?: ServerConfigs) {
         fields: updatedConfigs?.providers.microsoft.fields,
       },
       {
+        config: OIDC_CONFIGS,
+        enabled: updatedConfigs?.providers.oidc.enabled,
+        fields: updatedConfigs?.providers.oidc.fields,
+      },
+      {
         config: MAIL_CONFIGS,
         enabled: updatedConfigs?.mailConfigs.enabled,
         fields: mailConfigFields,
@@ -312,6 +333,12 @@ export function useConfigHandler(updatedConfigs?: ServerConfigs) {
       {
         provider: AuthProvider.Microsoft,
         status: updatedConfigs?.providers.microsoft.enabled
+          ? ServiceStatus.Enable
+          : ServiceStatus.Disable,
+      },
+      {
+        provider: AuthProvider.Oidc,
+        status: updatedConfigs?.providers.oidc.enabled
           ? ServiceStatus.Enable
           : ServiceStatus.Disable,
       },

@@ -9,7 +9,7 @@ import {
 } from "@api/generated/graphql"
 
 const expectedAllowedProvidersSchema = z.object({
-  // currently supported values are "GOOGLE", "GITHUB", "EMAIL", "MICROSOFT", "SAML"
+  // currently supported values are "GOOGLE", "GITHUB", "EMAIL", "MICROSOFT", "OIDC, "SAML"
   // keeping it as string to avoid backend accidentally breaking frontend when adding new providers
   providers: z.array(z.string()),
 })

@@ -188,6 +188,7 @@ Help us to translate Hoppscotch. Please read [`TRANSLATIONS`](TRANSLATIONS.md) f
 - Google
 - Microsoft
 - Email
+- OIDC
 - SSO (Single Sign-On)[^EE]
 
 **🔄 Synchronize your data:** Handoff to continue tasks on your other devices.

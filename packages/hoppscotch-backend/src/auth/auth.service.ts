@@ -178,7 +178,7 @@ export class AuthService {
    * Verify if Provider account exists for User
    *
    * @param user User Object
-   * @param SSOUserData User data from SSO providers (Magic,Google,Github,Microsoft)
+   * @param SSOUserData User data from SSO providers (Magic,Google,Github,Microsoft,Oidc)
    * @returns Either of existing user provider Account
    */
   async checkIfProviderAccountExists(user: AuthUser, SSOUserData) {
