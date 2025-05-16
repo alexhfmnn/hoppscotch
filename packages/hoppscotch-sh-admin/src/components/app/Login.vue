@@ -240,7 +240,7 @@ const signInWithMicrosoft = () => {
   signingInWithMicrosoft.value = false;
 };
 
-const signInWithOidc() {
+const signInWithOidc = () => {
   signingInWithOidc.value = true;
 
   try {
