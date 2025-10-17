@@ -9,6 +9,7 @@ import {
   HoppRESTRequestResponse,
   HoppCollection,
   GlobalEnvironment,
+  CollectionVariable,
 } from "@hoppscotch/data"
 import { entityReference } from "verzod"
 import { z } from "zod"
@@ -313,6 +314,16 @@ const HoppInheritedPropertySchema = z
         inheritedHeader: z.union([HoppRESTHeaders, GQLHeader]),
       })
     ),
+    variables: z
+      .array(
+        z.object({
+          parentPath: z.optional(z.string()),
+          parentID: z.string(),
+          parentName: z.string(),
+          inheritedVariables: z.array(CollectionVariable),
+        })
+      )
+      .catch([]),
   })
   .strict()
 
@@ -368,6 +379,7 @@ export const SECRET_ENVIRONMENT_VARIABLE_SCHEMA = z.union([
         .object({
           key: z.string(),
           value: z.string(),
+          initialValue: z.string().optional().catch(""),
           varIndex: z.number(),
         })
         .strict()
@@ -386,10 +398,22 @@ export const CURRENT_ENVIRONMENT_VALUE_SCHEMA = z.union([
           key: z.string(),
           currentValue: z.string(),
           varIndex: z.number(),
-          isSecret: z.boolean(),
+          isSecret: z.boolean().catch(false),
         })
         .strict()
     )
+  ),
+])
+
+export const CURRENT_SORT_VALUES_SCHEMA = z.union([
+  z.object({}).strict(),
+
+  z.record(
+    z.string(),
+    z.object({
+      sortBy: z.enum(["name"]),
+      sortOrder: z.enum(["asc", "desc"]),
+    })
   ),
 ])
 
@@ -500,8 +524,9 @@ const HoppRESTSaveContextSchema = z.nullable(
       .object({
         originLocation: z.literal("user-collection"),
         folderPath: z.string(),
-        requestIndex: z.number(),
+        requestIndex: z.optional(z.number()),
         exampleID: z.optional(z.string()),
+        requestRefID: z.optional(z.string()),
       })
       .strict(),
     z
@@ -511,6 +536,7 @@ const HoppRESTSaveContextSchema = z.nullable(
         teamID: z.optional(z.string()),
         collectionID: z.optional(z.string()),
         exampleID: z.optional(z.string()),
+        requestRefID: z.optional(z.string()),
       })
       .strict(),
   ])
@@ -579,6 +605,7 @@ export const REST_TAB_STATE_SCHEMA = z
             response: entityReference(HoppRESTRequestResponse),
             saveContext: z.optional(HoppRESTSaveContextSchema),
             isDirty: z.boolean(),
+            inheritedProperties: z.optional(HoppInheritedPropertySchema),
           }),
         ]),
       })
